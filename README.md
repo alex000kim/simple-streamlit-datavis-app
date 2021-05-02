@@ -1,4 +1,4 @@
-# simple-streamlit-datavis-app
+# Simple Streamlit app & deployment to Heroku
 
 ## Prerequisites
 
