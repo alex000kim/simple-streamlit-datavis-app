@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly_express as px
-
+import plotly.graph_objects as go
 
 df = pd.read_csv('vehicles_us.csv')
 df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
@@ -14,13 +14,22 @@ if not show_manuf_1k_ads:
 st.dataframe(df)
 st.header('Vehicle types by manufacturer')
 st.write(px.histogram(df, x='manufacturer', color='type'))
-st.header('Histogram of `condition` column vs `model_year`')
-year_min = st.number_input('Enter minimum value for the year to be displayed',
-                           value=1990,
-                           min_value=int(df['model_year'].min()),
-                           max_value=int(df['model_year'].max()))
-st.write(px.histogram(df[df['model_year'] >= year_min], x='model_year', color='condition'))
+st.header('Histogram of `condition` vs `model_year`')
 
+# -------------------------------------------------------
+# histograms in plotly:
+# fig = go.Figure()
+# fig.add_trace(go.Histogram(x=df[df['condition']=='good']['model_year'], name='good'))
+# fig.add_trace(go.Histogram(x=df[df['condition']=='excellent']['model_year'], name='excellent'))
+# fig.update_layout(barmode='stack')
+# st.write(fig)
+# works, but too many lines of code
+# -------------------------------------------------------
+
+# histograms in plotly_express:
+st.write(px.histogram(df, x='model_year', color='condition'))
+# a lot more concise!
+# -------------------------------------------------------
 
 st.header('Compare price distribution between manufacturers')
 manufac_list = sorted(df['manufacturer'].unique())
